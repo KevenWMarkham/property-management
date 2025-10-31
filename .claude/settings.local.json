@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(npx create-next-app@latest . --yes)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm run db:push:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout 10 bash -c 'until curl -s http://localhost:3000 > nul 2>&1; do sleep 1; done && echo \"\"Server is ready!\"\"')",
+      "Bash(timeout 15 bash -c 'until curl -s http://localhost:3001 > nul 2>&1; do sleep 1; done && echo \"\"Server ready on port 3001\"\"')",
+      "Bash(taskkill:*)",
+      "Bash(nul)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout 5 npm run dev:*)",
+      "Bash(cmd /c \"rd /s /q .next 2>nul & del /q *.lock 2>nul & echo Directory cleaned\")",
+      "Bash(curl:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(powershell -Command \"Remove-Item -Path nul -Force\")",
+      "Bash(git rm:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
