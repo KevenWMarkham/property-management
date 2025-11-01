@@ -112,7 +112,7 @@ export default function EditPropertyPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                   />
                 </div>
 
@@ -126,7 +126,7 @@ export default function EditPropertyPage() {
                     required
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                   />
                 </div>
 
@@ -141,7 +141,7 @@ export default function EditPropertyPage() {
                       required
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
 
@@ -154,7 +154,7 @@ export default function EditPropertyPage() {
                       required
                       value={formData.state}
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
 
@@ -167,7 +167,7 @@ export default function EditPropertyPage() {
                       required
                       value={formData.zipCode}
                       onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
                 </div>
@@ -180,7 +180,7 @@ export default function EditPropertyPage() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                   >
                     <option value="long-term">Long-term (Traditional Lease)</option>
                     <option value="short-term">Short-term (Vacation Rental)</option>
@@ -196,7 +196,7 @@ export default function EditPropertyPage() {
                   <select
                     value={formData.propertyType}
                     onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                   >
                     <option value="house">House</option>
                     <option value="apartment">Apartment</option>
@@ -216,7 +216,7 @@ export default function EditPropertyPage() {
                     required
                     value={formData.units}
                     onChange={(e) => setFormData({ ...formData, units: parseInt(e.target.value) })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                   />
                 </div>
 
@@ -232,7 +232,7 @@ export default function EditPropertyPage() {
                         step="0.01"
                         value={formData.nightlyRate}
                         onChange={(e) => setFormData({ ...formData, nightlyRate: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                       />
                     </div>
 
@@ -245,7 +245,7 @@ export default function EditPropertyPage() {
                         step="0.01"
                         value={formData.cleaningFee}
                         onChange={(e) => setFormData({ ...formData, cleaningFee: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
                       />
                     </div>
                   </>
