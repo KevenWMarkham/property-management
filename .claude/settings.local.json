@@ -40,7 +40,9 @@
       "Bash(cmd /c \"rd /s /q .next 2>nul\")",
       "Bash(powershell -Command:*)",
       "Bash(cmd /c \"rd /s /q .next 2>nul & echo Cleaned\")",
-      "Bash(timeout 30 bash -c \"until curl -s http://localhost:3000 > nul 2>&1; do sleep 1; done && echo \"\"Server ready!\"\"\")"
+      "Bash(timeout 30 bash -c \"until curl -s http://localhost:3000 > nul 2>&1; do sleep 1; done && echo \"\"Server ready!\"\"\")",
+      "Bash(find:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

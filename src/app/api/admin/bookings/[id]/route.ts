@@ -2,15 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { bookings } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { updateBookingSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 // GET /api/admin/bookings/[id]
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const booking = await db.query.bookings.findFirst({
-      where: eq(bookings.id, parseInt(params.id)),
+      where: eq(bookings.id, parseInt(id)),
     });
 
     if (!booking) {
@@ -30,21 +33,28 @@ export async function GET(
   }
 }
 
-// PUT /api/admin/bookings/[id]
-export async function PUT(
+// PATCH /api/admin/bookings/[id]
+export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
+
+    // Validate with Zod
+    const validatedData = updateBookingSchema.parse({
+      ...body,
+      id: parseInt(id),
+    });
 
     const [updatedBooking] = await db
       .update(bookings)
       .set({
-        ...body,
+        ...validatedData,
         updatedAt: new Date(),
       })
-      .where(eq(bookings.id, parseInt(params.id)))
+      .where(eq(bookings.id, parseInt(id)))
       .returning();
 
     if (!updatedBooking) {
@@ -56,6 +66,12 @@ export async function PUT(
 
     return NextResponse.json(updatedBooking);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.issues },
+        { status: 400 }
+      );
+    }
     console.error('Failed to update booking:', error);
     return NextResponse.json(
       { error: 'Failed to update booking' },
@@ -67,12 +83,13 @@ export async function PUT(
 // DELETE /api/admin/bookings/[id]
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await db
       .delete(bookings)
-      .where(eq(bookings.id, parseInt(params.id)));
+      .where(eq(bookings.id, parseInt(id)));
 
     return NextResponse.json({ success: true });
   } catch (error) {

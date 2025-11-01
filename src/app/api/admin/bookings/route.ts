@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { bookings } from '@/db/schema';
 import { desc } from 'drizzle-orm';
+import { createBookingSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 // GET /api/admin/bookings
 export async function GET() {
@@ -26,30 +28,32 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    if (!body.propertyId || !body.guestId || !body.checkInDate || !body.checkOutDate) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
+    // Validate with Zod
+    const validatedData = createBookingSchema.parse(body);
 
     const [newBooking] = await db
       .insert(bookings)
       .values({
-        propertyId: body.propertyId,
-        guestId: body.guestId,
-        checkInDate: new Date(body.checkInDate),
-        checkOutDate: new Date(body.checkOutDate),
-        status: body.status || 'pending',
-        nightlyRate: body.nightlyRate,
-        cleaningFee: body.cleaningFee || 0,
-        totalAmount: body.totalAmount,
-        specialRequests: body.specialRequests || null,
+        propertyId: validatedData.propertyId,
+        guestId: validatedData.guestId,
+        checkInDate: validatedData.checkInDate,
+        checkOutDate: validatedData.checkOutDate,
+        status: validatedData.status,
+        nightlyRate: validatedData.nightlyRate,
+        cleaningFee: validatedData.cleaningFee,
+        totalAmount: validatedData.totalAmount,
+        specialRequests: validatedData.specialRequests || null,
       })
       .returning();
 
     return NextResponse.json(newBooking, { status: 201 });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.issues },
+        { status: 400 }
+      );
+    }
     console.error('Failed to create booking:', error);
     return NextResponse.json(
       { error: 'Failed to create booking' },

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { tenants } from '@/db/schema';
 import { desc } from 'drizzle-orm';
+import { createTenantSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 // GET /api/admin/tenants
 export async function GET() {
@@ -26,27 +28,29 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    if (!body.firstName || !body.lastName || !body.email || !body.phone) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
+    // Validate with Zod
+    const validatedData = createTenantSchema.parse(body);
 
     const [newTenant] = await db
       .insert(tenants)
       .values({
-        firstName: body.firstName,
-        lastName: body.lastName,
-        email: body.email,
-        phone: body.phone,
-        emergencyContact: body.emergencyContact || null,
-        emergencyPhone: body.emergencyPhone || null,
+        firstName: validatedData.firstName,
+        lastName: validatedData.lastName,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        emergencyContact: validatedData.emergencyContactName,
+        emergencyPhone: validatedData.emergencyContactPhone,
       })
       .returning();
 
     return NextResponse.json(newTenant, { status: 201 });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.issues },
+        { status: 400 }
+      );
+    }
     console.error('Failed to create tenant:', error);
     return NextResponse.json(
       { error: 'Failed to create tenant' },

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { properties } from '@/db/schema';
 import { desc } from 'drizzle-orm';
+import { createPropertySchema } from '@/lib/validations';
+import { z } from 'zod';
 
 // GET /api/admin/properties - List all properties
 export async function GET() {
@@ -26,33 +28,34 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validate required fields
-    if (!body.name || !body.address || !body.city || !body.state || !body.zipCode || !body.propertyType) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
+    // Validate with Zod
+    const validatedData = createPropertySchema.parse(body);
 
     const [newProperty] = await db
       .insert(properties)
       .values({
-        name: body.name,
-        address: body.address,
-        city: body.city,
-        state: body.state,
-        zipCode: body.zipCode,
-        type: body.type || 'long-term',
-        propertyType: body.propertyType,
-        units: body.units || 1,
-        nightlyRate: body.nightlyRate || null,
-        cleaningFee: body.cleaningFee || null,
-        amenities: body.amenities || null,
+        name: validatedData.name,
+        address: validatedData.address,
+        city: validatedData.city,
+        state: validatedData.state,
+        zipCode: validatedData.zipCode,
+        type: validatedData.type,
+        propertyType: validatedData.propertyType,
+        units: validatedData.units || 1,
+        nightlyRate: validatedData.nightlyRate || null,
+        cleaningFee: validatedData.cleaningFee || null,
+        amenities: validatedData.amenities || null,
       })
       .returning();
 
     return NextResponse.json(newProperty, { status: 201 });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.issues },
+        { status: 400 }
+      );
+    }
     console.error('Failed to create property:', error);
     return NextResponse.json(
       { error: 'Failed to create property' },
