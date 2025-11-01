@@ -33,15 +33,15 @@ This plan outlines the implementation of an AI-driven monitoring and alerting sy
                              │
 ┌────────────────────────────┴────────────────────────────────────┐
 │              DATA PROCESSING & AI LAYER                         │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │  Stream Processing (Apache Flink / Kafka Streams)       │   │
-│  │  • Real-time data normalization                         │   │
-│  │  • Time-series windowing                                │   │
-│  │  • Data enrichment with context                         │   │
-│  └────────────────────┬────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │  Stream Processing (Apache Flink / Kafka Streams)       │    │
+│  │  • Real-time data normalization                         │    │
+│  │  • Time-series windowing                                │    │
+│  │  • Data enrichment with context                         │    │
+│  └────────────────────┬────────────────────────────────────┘    │
 │                       │                                         │
-│  ┌────────────────────┴────────────────────────────────────┐   │
-│  │         AI/ML PROCESSING ENGINE                         │   │
+│  ┌────────────────────┴────────────────────────────────────┐    │
+│  │         AI/ML PROCESSING ENGINE                         │    │
 │  │                                                          │   │
 │  │  ┌─────────────────┐  ┌─────────────────┐              │   │
 │  │  │ Anomaly         │  │ Predictive      │              │   │
